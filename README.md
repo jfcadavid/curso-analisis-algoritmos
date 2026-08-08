@@ -37,3 +37,6 @@
 ## Laboratorios evaluativos
 
 Durante el semestre se desarrollarán cinco informes de laboratorio evaluativos, los cuales se almacenarán dentro de la carpeta `laboratorios/`.
+## Organización del trabajo
+
+Los cambios realizados durante el curso se registrarán mediante commits descriptivos y se sincronizarán con el repositorio remoto en GitHub después de cada avance significativo.
