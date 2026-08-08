@@ -34,3 +34,6 @@
 
 # git push
 
+## Laboratorios evaluativos
+
+Durante el semestre se desarrollarán cinco informes de laboratorio evaluativos, los cuales se almacenarán dentro de la carpeta `laboratorios/`.
