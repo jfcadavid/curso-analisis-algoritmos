@@ -19,3 +19,34 @@ En la parte ética, el principal afectado por un fallo o una demora es el pacien
 También existe un impacto sobre el personal que utiliza el resultado. El operador del centro de contacto depende de la lista generada por Tamiza para saber a quién llamar primero. Si recibe una lista incompleta o incorrectamente ordenada, puede realizar su trabajo basándose en información equivocada. En este caso el operador asume parte del costo operativo, porque debe trabajar con una herramienta que no está entregando un resultado confiable, mientras que la Secretaría asume la responsabilidad de corregir el problema, atender posibles reclamos y recuperar la confianza en el servicio.
 Sin embargo, tampoco considero correcto confiar ciegamente en el sistema. Deben existir controles que permitan detectar inconsistencias, registrar errores y enviar a revisión humana los casos que lo requieran. Esa revisión debería realizarla personal autorizado para valorar la información clínica, no simplemente cualquier operador del centro de contacto.
 Además, en Tamiza el ordenamiento tiene una consecuencia especial: la posición de una persona en la lista determina qué tan pronto será contactada. Si un paciente con índice 950 aparece detrás de otro con índice 400, aunque ambos índices estén correctamente calculados, el algoritmo no estaría cumpliendo su función. Por eso la obligación no es únicamente terminar antes de las 6:00 a. m.; también debe respetar exactamente el orden de riesgo. Como responsable técnico, poner ese algoritmo en producción implica garantizar ambas cosas: que termine a tiempo y que la prioridad entregada corresponda realmente a los datos recibidos.
+## Parte 3 — Peor caso, mejor caso y caso promedio
+
+### 3.1 — Explicación y predicción
+
+Para analizar el comportamiento de un algoritmo se deben comparar entradas que tengan el mismo tamaño `n`. A partir de ese tamaño fijo se pueden estudiar el mejor caso, el peor caso y el caso promedio.
+
+El **mejor caso** corresponde a la entrada de tamaño `n` con la que el algoritmo realiza la menor cantidad de trabajo posible. Es decir, entre todas las entradas posibles de ese mismo tamaño se toma aquella que produce el menor costo.
+
+El **peor caso** corresponde a la entrada de tamaño `n` que obliga al algoritmo a realizar la mayor cantidad de trabajo. En este caso se toma el máximo costo entre todas las entradas posibles que tengan ese mismo tamaño.
+
+El **caso promedio** representa el comportamiento esperado del algoritmo entre las entradas posibles de tamaño `n`, teniendo en cuenta la forma en que se distribuyen esas entradas. No significa simplemente sacar un promedio entre el mejor y el peor caso, sino analizar cuánto trabajo se espera realizar normalmente bajo una determinada distribución de los datos.
+
+Para decidir si el algoritmo de Tamiza puede entrar en producción, considero que el caso más importante es el **peor caso**. La plataforma tiene una restricción estricta de tiempo: el proceso comienza a las 2:00 a. m. y debe terminar antes de las 6:00 a. m., por lo que solamente dispone de cuatro horas. El caso promedio puede mostrar cómo podría comportarse el sistema normalmente, pero no garantiza que termine a tiempo cuando los datos lleguen en una condición desfavorable. Además, como los registros pueden provenir de diferentes canales, no se puede asumir que siempre llegarán casi ordenados. Por esta razón, conocer qué tan mal puede llegar a comportarse el algoritmo permite tomar una decisión más segura antes de ponerlo en producción.
+
+#### Predicción de los escenarios
+
+Antes de realizar las mediciones, considero que los tres escenarios de Tamiza van a mostrar comportamientos diferentes con *insertion sort*, debido principalmente al orden en el que llegan los registros.
+
+Para el **escenario A — Aleatorio**, mi predicción es que se va a aproximar al **caso promedio**. Los registros llegan sin ningún orden relacionado con el índice de riesgo, por lo que algunos valores pueden quedar cerca de la posición que les corresponde y otros van a necesitar más comparaciones y desplazamientos. Por esta razón, espero un comportamiento intermedio entre los otros dos escenarios.
+
+Para el **escenario B — Casi ordenado**, considero que va a ser el escenario **más cercano al mejor caso**. El 98 % de los registros ya corresponde a la lista del día anterior y se encuentra ordenado por índice de riesgo, mientras que solamente el 2 % de los registros nuevos se agrega al final sin ordenar. Como *insertion sort* funciona mejor cuando los datos ya están ordenados o muy cerca de estarlo, espero que este escenario sea el que necesite menos comparaciones y menos tiempo de ejecución de los tres. Sin embargo, no sería el mejor caso teórico exacto, porque todavía existe un 2 % de datos desordenados.
+
+Finalmente, para el **escenario C — Orden inverso**, mi predicción es que representará el **peor caso**. Tamiza necesita ordenar los registros de mayor a menor índice de riesgo, pero el sistema legado los entrega de menor a mayor. Esto significa que los datos llegan exactamente en el sentido contrario al que se necesitan. Por esta razón, *insertion sort* tendría que realizar una gran cantidad de comparaciones y desplazamientos para llevar cada elemento hasta la posición correcta.
+
+Por lo tanto, antes de realizar el experimento mi predicción es:
+
+- **Escenario A — Aleatorio:** comportamiento cercano al caso promedio.
+- **Escenario B — Casi ordenado:** comportamiento cercano al mejor caso.
+- **Escenario C — Orden inverso:** peor caso.
+
+Esta predicción se dejará registrada antes de realizar las mediciones y después se comparará con los resultados obtenidos en las gráficas de tiempo y número de comparaciones.
