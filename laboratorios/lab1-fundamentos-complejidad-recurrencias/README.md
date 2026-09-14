@@ -50,3 +50,31 @@ Por lo tanto, antes de realizar el experimento mi predicción es:
 - **Escenario C — Orden inverso:** peor caso.
 
 Esta predicción se dejará registrada antes de realizar las mediciones y después se comparará con los resultados obtenidos en las gráficas de tiempo y número de comparaciones.
+
+### 3.2 — Demostración experimental
+
+Para comprobar la predicción anterior se ejecutó *insertion sort* sobre los tres escenarios de Tamiza utilizando tamaños de entrada de 100, 200, 400, 800, 1600, 3200 y 6400 registros. Para cada ejecución se registró el número de comparaciones entre elementos y el tiempo de ejecución medido con `time.perf_counter()`.
+
+#### Comparaciones entre elementos
+
+![Comparaciones de los tres escenarios](graficas/parte3_comparaciones.png)
+
+Los resultados muestran que el **escenario C — Orden inverso** fue el más costoso para *insertion sort*. A medida que aumenta el tamaño de la entrada, su número de comparaciones crece mucho más rápido que en los otros escenarios. Por ejemplo, con `n = 3200` realizó **5.118.400 comparaciones**.
+
+El **escenario B — Casi ordenado** fue el más favorable. Para el mismo tamaño de `n = 3200` realizó solamente **98.648 comparaciones**, una diferencia considerable frente al escenario inverso. Esto ocurre porque la mayor parte de la lista ya se encuentra en el orden que Tamiza necesita y solamente una pequeña parte de los registros debe ser reubicada.
+
+El **escenario A — Aleatorio** presentó un comportamiento intermedio. Para `n = 3200` realizó **2.533.103 comparaciones**, quedando entre los escenarios B y C. Por esta razón, dentro de este experimento es el escenario se aproxima al comportamiento de un caso promedio.
+
+#### Tiempo de ejecución
+
+![Tiempo de ejecución de los tres escenarios](graficas/parte3_tiempo.png)
+
+La gráfica de tiempo presenta el mismo comportamiento general que la gráfica de comparaciones. El escenario B mantiene los menores tiempos, el escenario A queda en una posición intermedia y el escenario C presenta los mayores tiempos.
+
+Con `n = 3200`, el escenario A tardó aproximadamente **0,298318 segundos**, el escenario B **0,011203 segundos** y el escenario C **0,565611 segundos**. Al aumentar el tamaño a `n = 6400`, el escenario A llegó a **1,209796 segundos** y el escenario B a **0,046880 segundos**, mostrando que la diferencia entre los escenarios se hace cada vez más visible al crecer la entrada.
+
+#### Comparación con la predicción
+
+Los resultados obtenidos coinciden con la predicción realizada en la sección 3.1. El escenario **B — Casi ordenado** resultó ser el más cercano al mejor caso, el escenario **A — Aleatorio** presentó un comportamiento intermedio que se aproxima al caso promedio y el escenario **C — Orden inverso** resultó ser el peor caso de los tres.
+
+Esto permite observar experimentalmente que el desempeño de *insertion sort* depende fuertemente de la forma en que llegan los datos, incluso cuando todas las listas contienen exactamente la misma cantidad de elementos.
