@@ -78,3 +78,146 @@ Con `n = 3200`, el escenario A tardó aproximadamente **0,298318 segundos**, el 
 Los resultados obtenidos coinciden con la predicción realizada en la sección 3.1. El escenario **B — Casi ordenado** resultó ser el más cercano al mejor caso, el escenario **A — Aleatorio** presentó un comportamiento intermedio que se aproxima al caso promedio y el escenario **C — Orden inverso** resultó ser el peor caso de los tres.
 
 Esto permite observar experimentalmente que el desempeño de *insertion sort* depende fuertemente de la forma en que llegan los datos, incluso cuando todas las listas contienen exactamente la misma cantidad de elementos.
+
+```markdown
+## Parte 4 — Complejidad de merge sort e insertion sort
+
+### 4.1 — Cálculo teórico
+
+#### Complejidad de merge sort
+
+`Merge sort` utiliza la estrategia de **divide y vencerás**. Para ordenar una lista de tamaño `n`, primero la divide en dos partes y luego aplica el mismo procedimiento sobre cada mitad.
+
+Su recurrencia es:
+
+$$
+T(n)=2T(n/2)+\Theta(n)
+$$
+
+El término `2T(n/2)` aparece porque se generan **dos subproblemas**, cada uno con aproximadamente la mitad de los elementos de la lista original.
+
+El término `Θ(n)` corresponde al proceso de mezcla, ya que para unir las dos mitades ordenadas es necesario recorrer sus elementos hasta formar nuevamente la lista completa.
+
+Para resolver la recurrencia utilizo el **método maestro**, cuya forma general es:
+
+$$
+T(n)=aT(n/b)+f(n)
+$$
+
+Para `merge sort` se tiene:
+
+- `a = 2`, porque se generan dos subproblemas.
+- `b = 2`, porque cada subproblema tiene la mitad del tamaño original.
+- `f(n) = Θ(n)`, porque el proceso de mezcla requiere recorrer los elementos.
+
+Ahora calculo:
+
+$$
+n^{\log_b a}
+$$
+
+Reemplazando los valores:
+
+$$
+n^{\log_2 2}=n^1=n
+$$
+
+
+$$
+f(n)=\Theta(n)
+$$
+
+
+$$
+n^{\log_b a}=n
+$$
+
+Como ambos tienen el mismo orden de crecimiento, corresponde al **caso 2 del método maestro**.
+
+La solución es:
+
+$$
+T(n)=\Theta(n^{\log_b a}\log n)
+$$
+
+Reemplazando:
+
+$$
+T(n)=\Theta(n\log n)
+$$
+
+Por lo tanto, la complejidad temporal de `merge sort` es:
+
+$$
+\boxed{\Theta(n\log n)}
+$$
+
+Este comportamiento se mantiene en el **mejor caso**, **caso promedio** y **peor caso**, porque `merge sort` siempre realiza las divisiones y las mezclas de la misma forma, sin importar cómo estén organizados inicialmente los datos.
+```
+#### Complejidad de insertion sort
+
+Para calcular la complejidad de *insertion sort* analizo las líneas de la implementación utilizada en el experimento.
+
+| Instrucción | Número de ejecuciones en el peor caso |
+|---|---:|
+| `arreglo = datos.copy()` | `n` elementos copiados |
+| `comparaciones = 0` | 1 |
+| `for i in range(1, len(arreglo))` | aproximadamente `n` |
+| `clave = arreglo[i]` | `n - 1` |
+| `j = i - 1` | `n - 1` |
+| condición `while j >= 0` | suma de aproximadamente `i + 1` |
+| `comparaciones += 1` | \(\sum_{i=1}^{n-1} i\) |
+| `arreglo[j] < clave` | \(\sum_{i=1}^{n-1} i\) |
+| `arreglo[j + 1] = arreglo[j]` | \(\sum_{i=1}^{n-1} i\) |
+| `j -= 1` | \(\sum_{i=1}^{n-1} i\) |
+| `arreglo[j + 1] = clave` | `n - 1` |
+| `return arreglo, comparaciones` | 1 |
+
+En el peor caso, para cada posición `i`, el elemento actual debe compararse y desplazarse a través de todos los elementos anteriores. Por eso aparece la sumatoria:
+
+\[
+\sum_{i=1}^{n-1}i
+\]
+
+Aplicando la fórmula:
+
+\[
+\sum_{i=1}^{n-1}i=\frac{n(n-1)}{2}
+\]
+
+se obtiene:
+
+\[
+\frac{n^2-n}{2}
+\]
+
+Al sumar los demás términos lineales y constantes, el término que domina cuando `n` crece es `n²`. Por esta razón:
+
+\[
+T(n)=an^2+bn+c
+\]
+
+y su cota ajustada en el peor caso es:
+
+\[
+\boxed{\Theta(n^2)}
+\]
+
+En el mejor caso, cuando la lista ya se encuentra ordenada de mayor a menor, cada elemento necesita solamente una comparación con la parte anteriormente procesada y no requiere recorrer toda la lista. Por esta razón el mejor caso es:
+
+\[
+\boxed{\Theta(n)}
+\]
+
+Para una entrada aleatoria se espera que los elementos recorran, en promedio, una parte de los elementos anteriores. Aunque el número exacto de desplazamientos cambia, la sumatoria sigue teniendo crecimiento cuadrático, por lo que el caso promedio es:
+
+\[
+\boxed{\Theta(n^2)}
+\]
+
+#### Complejidades esperadas
+
+| Algoritmo | Mejor caso | Caso promedio | Peor caso |
+|---|---:|---:|---:|
+| Insertion sort | Θ(n) | Θ(n²) | Θ(n²) |
+| Merge sort | Θ(n log n) | Θ(n log n) | Θ(n log n) |
