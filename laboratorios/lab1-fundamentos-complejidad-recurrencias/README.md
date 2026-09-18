@@ -2,6 +2,26 @@
 
 **Nombre:** Juan Felipe Cadavid Zabala
 
+## Instrucciones para reproducir el experimento
+
+Activar el entorno virtual desde la raíz del repositorio:
+
+venv\Scripts\activate
+
+Entrar a la carpeta del laboratorio:
+
+cd laboratorios/lab1-fundamentos-complejidad-recurrencias
+
+Ejecutar la Parte 3:
+
+python parte3_casos.py
+
+Ejecutar la Parte 4:
+
+python parte4_complejidad.py
+
+Las gráficas se generan automáticamente en la carpeta graficas/.
+
 ## Parte 1 — Analizar el algoritmo antes de comprar hardware
 
 Antes de comprar un servidor más rápido considero necesario revisar primero el algoritmo que utiliza Tamiza. El hecho de que insertion sort lleve ocho años funcionando nos demuestra que puede producir un ordenamiento correcto, pero no significa que siga siendo una solución adecuada para la cantidad de información que maneja actualmente la plataforma.
