@@ -41,6 +41,10 @@ Sin embargo, tampoco considero correcto confiar ciegamente en el sistema. Deben 
 Además, en Tamiza el ordenamiento tiene una consecuencia especial: la posición de una persona en la lista determina qué tan pronto será contactada. Si un paciente con índice 950 aparece detrás de otro con índice 400, aunque ambos índices estén correctamente calculados, el algoritmo no estaría cumpliendo su función. Por eso la obligación no es únicamente terminar antes de las 6:00 a. m.; también debe respetar exactamente el orden de riesgo. Como responsable técnico, poner ese algoritmo en producción implica garantizar ambas cosas: que termine a tiempo y que la prioridad entregada corresponda realmente a los datos recibidos.
 ## Parte 3 — Peor caso, mejor caso y caso promedio
 
+**Código de la Parte 3:** [parte3_casos.py](parte3_casos.py)
+
+**Archivos utilizados:** [algoritmos.py](algoritmos.py) y [datos.py](datos.py)
+
 ### 3.1 — Explicación y predicción
 
 Para analizar el comportamiento de un algoritmo se deben comparar entradas que tengan el mismo tamaño `n`. A partir de ese tamaño fijo se pueden estudiar el mejor caso, el peor caso y el caso promedio.
@@ -100,6 +104,10 @@ Los resultados obtenidos coinciden con la predicción realizada en la sección 3
 Esto permite observar experimentalmente que el desempeño de *insertion sort* depende fuertemente de la forma en que llegan los datos, incluso cuando todas las listas contienen exactamente la misma cantidad de elementos.
 
 ## Parte 4 — Complejidad de merge sort e insertion sort
+
+**Código de la Parte 4:** [parte4_complejidad.py](parte4_complejidad.py)
+
+**Algoritmos utilizados:** [algoritmos.py](algoritmos.py)
 
 ### 4.1 — Cálculo teórico
 
