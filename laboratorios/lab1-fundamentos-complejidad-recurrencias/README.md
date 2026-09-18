@@ -221,3 +221,137 @@ Para una entrada aleatoria se espera que los elementos recorran, en promedio, un
 |---|---:|---:|---:|
 | Insertion sort | Θ(n) | Θ(n²) | Θ(n²) |
 | Merge sort | Θ(n log n) | Θ(n log n) | Θ(n log n) |
+
+```markdown
+### 4.2 — Validación experimental
+
+Para comprobar si lo que se calculó de forma teórica en la sección anterior realmente se puede observar en la práctica, ejecuté `insertion sort` y `merge sort` utilizando el **escenario A — Aleatorio**.
+
+Para los dos algoritmos utilicé los mismos tamaños de entrada:
+
+- 100
+- 200
+- 400
+- 800
+- 1600
+- 3200
+- 6400 registros
+
+En cada tamaño generé una sola lista aleatoria y utilicé exactamente esa misma lista para probar los dos algoritmos. De esta forma, la comparación es más justa, porque ambos están trabajando con los mismos datos.
+
+Para medir solamente el tiempo que tarda cada algoritmo en ordenar la lista utilicé `time.perf_counter()`.
+
+![Comparación de tiempo entre insertion sort y merge sort](graficas/parte4_tiempo.png)
+
+En la gráfica se puede observar que, a medida que aumenta el tamaño de la entrada, el tiempo de `insertion sort` empieza a crecer mucho más rápido que el de `merge sort`.
+
+Por ejemplo, para `n = 100`, `insertion sort` tardó aproximadamente **0,000544 segundos**, mientras que `merge sort` tardó **0,000348 segundos**. En este punto la diferencia todavía es pequeña porque la cantidad de datos también es pequeña.
+
+Sin embargo, cuando aumenta el número de registros, la diferencia empieza a ser mucho más evidente.
+
+Para `n = 3200` obtuve los siguientes tiempos:
+
+- `Insertion sort`: **0,656472 segundos**
+- `Merge sort`: **0,017279 segundos**
+
+Finalmente, para `n = 6400`:
+
+- `Insertion sort`: **2,664621 segundos**
+- `Merge sort`: **0,037668 segundos**
+
+En esta última prueba, `merge sort` fue aproximadamente **70,7 veces más rápido** que `insertion sort`.
+
+La diferencia también se puede observar en la cantidad de comparaciones realizadas. Para `n = 6400`:
+
+- `Insertion sort` realizó **10.276.753 comparaciones**.
+- `Merge sort` realizó **72.967 comparaciones**.
+
+Esto coincide con lo esperado según el análisis teórico de la sección 4.1.
+
+En una entrada aleatoria, `insertion sort` tiene un comportamiento cercano a:
+
+$$
+\Theta(n^2)
+$$
+
+Por esta razón, cuando aumenta `n`, la cantidad de operaciones y el tiempo de ejecución aumentan rápidamente.
+
+En cambio, `merge sort` tiene una complejidad de:
+
+$$
+\Theta(n \log n)
+$$
+
+Esto hace que pueda manejar tamaños de entrada más grandes sin que el tiempo aumente de una forma tan rápida.
+
+En los tamaños pequeños no apareció un resultado diferente a lo esperado, ya que `merge sort` también fue más rápido. Sin embargo, al principio la diferencia entre los dos algoritmos era pequeña.
+
+A medida que aumentó la cantidad de registros, la separación entre las dos curvas se hizo mucho más grande, mostrando de forma experimental la diferencia entre un crecimiento cercano a `Θ(n²)` y uno de `Θ(n log n)`.
+```
+
+```markdown
+### 4.3 — Concepto técnico a la Secretaría de Salud
+
+#### Concepto técnico
+
+Al equipo de ingeniería de la Secretaría de Salud:
+
+Después de revisar tanto el análisis teórico como los resultados obtenidos en las pruebas, considero que para la plataforma Tamiza sería más conveniente reemplazar `insertion sort` por `merge sort` como algoritmo de ordenamiento.
+
+La principal razón es que los registros no siempre van a llegar organizados de la misma forma y, según el caso planteado, se quiere mantener una sola implementación para todos los escenarios.
+
+`Insertion sort` puede funcionar muy bien cuando los datos llegan casi ordenados, pero su rendimiento empeora bastante cuando los registros llegan de forma aleatoria o en orden inverso. En cambio, `merge sort` mantiene una complejidad de:
+
+$$
+\Theta(n \log n)
+$$
+
+sin importar cómo estén organizados inicialmente los datos.
+
+Esto hace que `merge sort` tenga un comportamiento más estable y predecible frente a los diferentes escenarios que puede presentar Tamiza.
+
+Los resultados obtenidos en las pruebas también muestran claramente esta diferencia. Para una entrada aleatoria de `n = 6400` se obtuvieron los siguientes resultados:
+
+- `Insertion sort`: **2,664621 segundos** y **10.276.753 comparaciones**.
+- `Merge sort`: **0,037668 segundos** y **72.967 comparaciones**.
+
+En esta prueba, `merge sort` fue aproximadamente **70,7 veces más rápido** que `insertion sort`.
+
+Tomando estos resultados como referencia, también se realizó una estimación para los **1.200.000 registros** que actualmente debe procesar la plataforma.
+
+Para `insertion sort`, teniendo en cuenta su crecimiento aproximado de:
+
+$$
+\Theta(n^2)
+$$
+
+el tiempo estimado sería de aproximadamente **26 horas**.
+
+En el caso de `merge sort`, utilizando su crecimiento:
+
+$$
+\Theta(n \log n)
+$$
+
+el tiempo estimado sería de aproximadamente **11,3 segundos**.
+
+Es importante aclarar que estos tiempos son una **estimación** basada en las mediciones realizadas y en la complejidad de cada algoritmo. No corresponden a una prueba real con los 1.200.000 registros, por lo que pueden cambiar dependiendo del hardware, el sistema operativo y las condiciones reales del servidor.
+
+También se analizó la posibilidad de mejorar el rendimiento utilizando un servidor más rápido. Si se supone de forma ideal que un servidor con el doble de velocidad pudiera reducir exactamente a la mitad el tiempo de `insertion sort`, este pasaría de unas **26 horas** a aproximadamente **13 horas**.
+
+Aun así, seguiría siendo un tiempo mucho mayor que la ventana máxima de **4 horas**, por lo que aumentar el hardware no solucionaría realmente el problema principal.
+
+Sin embargo, `merge sort` también tiene una desventaja que se debe tener en cuenta: el consumo de memoria.
+
+Mientras que `insertion sort` trabaja principalmente sobre la misma lista, `merge sort` necesita utilizar estructuras auxiliares para realizar las divisiones y las mezclas. Por esta razón, antes de implementarlo en producción sería necesario verificar que el servidor tenga suficiente memoria para trabajar con todo el volumen de registros.
+
+A pesar de esto, considero que la diferencia en tiempo de ejecución y la estabilidad que ofrece `merge sort` hacen que sea una mejor opción para este caso.
+
+Por esta razón, mi recomendación sería implementar `merge sort` y antes de llevarlo definitivamente a producción realizar pruebas con cantidades de datos cercanas a los **1.200.000 registros**, revisando principalmente:
+
+- El tiempo total de ejecución.
+- El consumo de memoria.
+- El comportamiento del algoritmo con diferentes órdenes de entrada.
+
+De esta forma se podría comprobar en un entorno más cercano al real que `merge sort` cumple con las necesidades de la plataforma Tamiza.
+```
