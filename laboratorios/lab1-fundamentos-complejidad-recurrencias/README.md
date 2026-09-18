@@ -99,7 +99,6 @@ Los resultados obtenidos coinciden con la predicción realizada en la sección 3
 
 Esto permite observar experimentalmente que el desempeño de *insertion sort* depende fuertemente de la forma en que llegan los datos, incluso cuando todas las listas contienen exactamente la misma cantidad de elementos.
 
-```markdown
 ## Parte 4 — Complejidad de merge sort e insertion sort
 
 ### 4.1 — Cálculo teórico
@@ -173,7 +172,7 @@ $$
 $$
 
 Este comportamiento se mantiene en el **mejor caso**, **caso promedio** y **peor caso**, porque `merge sort` siempre realiza las divisiones y las mezclas de la misma forma, sin importar cómo estén organizados inicialmente los datos.
-```
+
 #### Complejidad de insertion sort
 
 Para calcular la complejidad de *insertion sort* analizo las líneas de la implementación utilizada en el experimento.
@@ -242,7 +241,7 @@ Para una entrada aleatoria se espera que los elementos recorran, en promedio, un
 | Insertion sort | Θ(n) | Θ(n²) | Θ(n²) |
 | Merge sort | Θ(n log n) | Θ(n log n) | Θ(n log n) |
 
-```markdown
+
 ### 4.2 — Validación experimental
 
 Para comprobar si lo que se calculó de forma teórica en la sección anterior realmente se puede observar en la práctica, ejecuté `insertion sort` y `merge sort` utilizando el **escenario A — Aleatorio**.
@@ -307,9 +306,8 @@ Esto hace que pueda manejar tamaños de entrada más grandes sin que el tiempo a
 En los tamaños pequeños no apareció un resultado diferente a lo esperado, ya que `merge sort` también fue más rápido. Sin embargo, al principio la diferencia entre los dos algoritmos era pequeña.
 
 A medida que aumentó la cantidad de registros, la separación entre las dos curvas se hizo mucho más grande, mostrando de forma experimental la diferencia entre un crecimiento cercano a `Θ(n²)` y uno de `Θ(n log n)`.
-```
 
-```markdown
+
 ### 4.3 — Concepto técnico a la Secretaría de Salud
 
 #### Concepto técnico
@@ -374,4 +372,3 @@ Por esta razón, mi recomendación sería implementar `merge sort` y antes de ll
 - El comportamiento del algoritmo con diferentes órdenes de entrada.
 
 De esta forma se podría comprobar en un entorno más cercano al real que `merge sort` cumple con las necesidades de la plataforma Tamiza.
-```
