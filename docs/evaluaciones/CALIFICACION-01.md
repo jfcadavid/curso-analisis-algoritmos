@@ -70,7 +70,7 @@ Muy buen trabajo: el código es correcto y el informe cubre todas las partes.
 - Varios commits seguidos tienen el mismo mensaje; conviene que cada uno describa lo que cambió.
 
 ## ¿El código funciona?
-Sí. Los dos programas corren sin errores, los algoritmos ordenan bien en mis pruebas y se generan las tres gráficas.
+Sí. Los dos programas corren sin errores, los algoritmos ordenan bien y se generan las tres gráficas.
 
 ## Para el próximo laboratorio
 - Escriba el razonamiento de cada extrapolación (de qué tamaño parte y por qué factor multiplica).
