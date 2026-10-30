@@ -68,7 +68,7 @@ Muy buen trabajo: el código es correcto y el informe responde casi todo lo pedi
 - El comando para activar el entorno solo sirve en Windows; indique también el de macOS/Linux.
 
 ## ¿El código funciona?
-Sí. Las pruebas pasan, ambos algoritmos dan la misma suma en mis pruebas con listas aleatorias y la medición genera la gráfica sin errores.
+Sí. Las pruebas pasan, ambos algoritmos dan la misma suma en listas aleatorias y la medición genera la gráfica sin errores.
 
 ## Para el próximo laboratorio
 - Deje el laboratorio en una sola carpeta, con commits pequeños y mensajes distintos que describan cada avance.
